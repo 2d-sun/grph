@@ -16,12 +16,14 @@ export default class IncidenceMatrix implements GraphInterface {
     readonly graph: number[][];
     readonly points: Map<string, Point>;
     readonly edges: Map<number, string>;
+    private longestNameLength: number;
 
     constructor(graph: number[][] = []) {
         // todo: validate graph
         this.graph = graph;
         this.points = new Map();
         this.edges = new Map();
+        this.longestNameLength = 0;
     }
 
     addPoint(name: string) {
@@ -29,6 +31,11 @@ export default class IncidenceMatrix implements GraphInterface {
         if (!this.points.has(point.getName())) {
             this.points.set(point.getName(), point);
             this.graph.push(Array(this.edges.size).fill(0));
+
+            // fill longestNameLength. Used to print
+            if (this.longestNameLength < point.getName().length) {
+                this.longestNameLength = point.getName().length;
+            }
         }
         return this;
     }
@@ -75,8 +82,10 @@ export default class IncidenceMatrix implements GraphInterface {
     print(): string {
         let print = ""; 
 
-        this.points.forEach((point: Point) => {
-            print += point.getName() + " ";
+
+
+        this.points.forEach((point: Point) => { 
+            print += new Array(this.longestNameLength - point.getName().length).fill(" ").join("") + point.getName() + " ";
             print += this.graph[point.getIndex()].join(" ");
             print += "\n";
         });
