@@ -4,8 +4,6 @@
 // https://en.wikipedia.org/wiki/Graph_theory#Applications
 
 export default interface Graph {
-    graph: number[];
-
     addPoint(name: string): this;
     removePoint(name: string): this;
 

@@ -29,11 +29,9 @@ export default class AdjacencyMatrix implements GraphInterface {
         const point = new Point(name, this.points.size);
         if (!this.points.has(point.getName())) {
             this.points.set(point.getName(), point);
-            const prevSize = this.points.size - 1;
-            for (let rowIndex=0; rowIndex<prevSize; rowIndex++) {
-                this.graph.splice(prevSize * rowIndex + (prevSize + rowIndex), 0, 0)
+            for (let rowIndex=1; rowIndex<this.points.size; rowIndex++) {
+                this.graph.splice(this.points.size * rowIndex - 1, 0, 0)
             }
-    
             this.graph.push(...new Array(this.points.size).fill(0));        
         }
         return this;
@@ -46,7 +44,7 @@ export default class AdjacencyMatrix implements GraphInterface {
         return this;
     }
 
-    getPoint(name: string) {
+    getPoint(name: string): Point {
         return this.points.get(name);
     }
 
@@ -77,7 +75,7 @@ export default class AdjacencyMatrix implements GraphInterface {
         return this;
     }
 
-    print() {
+    print(): string {
         let print = "";
         const len = this.points.size;
         
@@ -88,7 +86,7 @@ export default class AdjacencyMatrix implements GraphInterface {
             head.push(`${point.getName()}`)
         });
 
-        console.log(head.join(" | ") + " | ");
+        print += head.join(" | ") + " | \n";
         
         // print matrix cells
         this.graph.forEach((i, index) => {
@@ -102,7 +100,7 @@ export default class AdjacencyMatrix implements GraphInterface {
         })
         
         
-        console.log(print);
+        return print;
     }
 }
 
